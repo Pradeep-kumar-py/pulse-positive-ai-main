@@ -24,18 +24,9 @@ import Chatbot from "./pages/Chatbot";
 const queryClient = new QueryClient();
 
 const App = () => {
-  const { initializeAuth } = useAuthStore();
 
-  useEffect(() => {
-    // Initialize authentication state from localStorage on app start
-    initializeAuth();
-  }, [initializeAuth]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
@@ -56,8 +47,6 @@ const App = () => {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
   );
 };
 

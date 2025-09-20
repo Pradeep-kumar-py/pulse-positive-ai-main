@@ -1,10 +1,17 @@
 import { Link } from "react-router-dom";
+import react, { useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Heart, Brain, BookOpen, MessageCircle, Users, Trophy } from "lucide-react";
 import Navigation from "@/components/Navigation";
+import { useAuthStore } from "../util/AuthContext";
 
 const Dashboard = () => {
+
+  const { isAuthenticated, name, email } = useAuthStore();
+  // Add this to your Navigation component to debug
+  console.log('Auth state:', { isAuthenticated, name, email });
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       <Navigation />

@@ -15,8 +15,10 @@ import {
 import { useAuthStore } from "@/util/AuthContext";
 
 const Navigation = () => {
-  const { isAuthenticated, email, name, logout } = useAuthStore();
+  const { isAuthenticated, email, name } = useAuthStore();
   const location = useLocation();
+
+  
 
   const navItems = [
     { path: "/mood", label: "Mood", icon: Heart },
@@ -26,14 +28,12 @@ const Navigation = () => {
     { path: "/achievements", label: "Progress", icon: Trophy },
     // { path: "/insights", label: "Insights", icon: BarChart3 },
     { path: "/companion", label: "Eliza Ai", icon: MessageCircle },
-    { path: "/chatbot", label: "Chatbot", icon: MessageCircle },
+    // { path: "/chatbot", label: "Chatbot", icon: MessageCircle },
     { path: "/dashboard", label: "Dashboard", icon: Home },
     // { path: "/profile", label: "Profile", icon: User },
   ];
 
-  const handleLogout = () => {
-    logout(); // This will now handle both state clearing and localStorage cleanup
-  };
+ 
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
@@ -56,14 +56,26 @@ const Navigation = () => {
                 </Button>
               </Link>
             ))}
-            <div className="flex items-center gap-2 pl-3 ml-2 border-l border-border">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/60 hover:bg-muted transition">
-                <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                  <User size={16} />
+            {isAuthenticated && (
+              <div className="flex items-center gap-2 pl-3 ml-2 border-l border-border">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/60 hover:bg-muted transition">
+                  <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                    <User size={16} />
+                  </div>
+                  <span className="text-sm font-medium">
+                    Welcome {name || email?.split('@')[0] || 'User'}
+                  </span>
                 </div>
-                <span className="text-sm font-medium">Welcome Pradeep Kumar</span>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground"
+                >
+                  <LogOut size={16} />
+                  <span className="hidden lg:inline">Logout</span>
+                </Button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

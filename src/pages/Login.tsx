@@ -14,7 +14,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuthStore();
+  const { setSEmail, setSName, setAccessToken, setIsAuthenticated } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -37,16 +37,13 @@ const Login = () => {
       const data = await response.json();
 
       // Store user data in localStorage for persistence
-      localStorage.setItem('userData', JSON.stringify({ 
-        name: data.name, 
-        email: data.email 
-      }));
+      localStorage.setItem('accessToken', data.accessToken);
+      setAccessToken(data.accessToken);
+      setSEmail(data.email);
+      setSName(data.name);
+      setIsAuthenticated(true);
       
-      login({ 
-        name: data.name, 
-        email: data.email, 
-        token: data.accessToken 
-      });
+
 
       navigate('/dashboard');
 
