@@ -3,6 +3,8 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useAuthStore } from "@/util/AuthContext";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import MoodTracking from "./pages/MoodTracking";
@@ -16,34 +18,47 @@ import Insights from "./pages/Insights";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
+import Chatbot from "./pages/Chatbot";
+
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/mood" element={<MoodTracking />} />
-          <Route path="/habits" element={<HabitsTracking />} />
-          <Route path="/journal" element={<Journaling />} />
-          <Route path="/companion" element={<AICompanion />} />
-          <Route path="/community" element={<Community />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/achievements" element={<Achievements />} />
-          <Route path="/insights" element={<Insights />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  const { initializeAuth } = useAuthStore();
+
+  useEffect(() => {
+    // Initialize authentication state from localStorage on app start
+    initializeAuth();
+  }, [initializeAuth]);
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/mood" element={<MoodTracking />} />
+            <Route path="/habits" element={<HabitsTracking />} />
+            <Route path="/journal" element={<Journaling />} />
+            <Route path="/companion" element={<Chatbot />} />
+            <Route path="/chatbot" element={<Chatbot />} />
+
+            <Route path="/community" element={<Community />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/achievements" element={<Achievements />} />
+            <Route path="/insights" element={<Insights />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

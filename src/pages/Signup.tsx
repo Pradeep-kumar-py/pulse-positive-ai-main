@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Heart } from "lucide-react";
+import { Heart, Loader } from "lucide-react";
+import { BASE_URL } from "@/lib/constant";
+import { set } from "date-fns";
+import { useAuthStore } from "@/util/AuthContext";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -17,6 +20,43 @@ const Signup = () => {
     agreeTerms: false,
     agreePrivacy: false
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const { setAuthState } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    // Handle form submission
+    console.log(formData);
+    try {
+      setIsLoading(true);
+      const response = await fetch(`${BASE_URL}/api/user/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create account');
+      }
+      const data = await response.json();
+
+      localStorage.setItem('token', data.accessToken);
+      setAuthState({ isAuthenticated: true, email: data.email, name: data.name });
+
+      navigate('/dashboard');
+
+      console.log('Account created successfully');
+    } catch (error) {
+      console.error('Error creating account:', error);
+    } finally {
+      setIsLoading(false);
+    }
+
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-wellness-green-soft/20 flex items-center justify-center p-4">
@@ -44,7 +84,7 @@ const Signup = () => {
                 id="name"
                 placeholder="Enter your full name"
                 value={formData.name}
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -54,7 +94,7 @@ const Signup = () => {
                 type="email"
                 placeholder="your@email.com"
                 value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -64,7 +104,7 @@ const Signup = () => {
                 type="password"
                 placeholder="Create a strong password"
                 value={formData.password}
-                onChange={(e) => setFormData({...formData, password: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
             </div>
             <div className="space-y-2">
@@ -74,7 +114,7 @@ const Signup = () => {
                 type="password"
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
+                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
               />
             </div>
 
@@ -83,8 +123,8 @@ const Signup = () => {
                 <Checkbox
                   id="terms"
                   checked={formData.agreeTerms}
-                  onCheckedChange={(checked) => 
-                    setFormData({...formData, agreeTerms: checked as boolean})
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, agreeTerms: checked as boolean })
                   }
                 />
                 <label
@@ -101,8 +141,8 @@ const Signup = () => {
                 <Checkbox
                   id="privacy"
                   checked={formData.agreePrivacy}
-                  onCheckedChange={(checked) => 
-                    setFormData({...formData, agreePrivacy: checked as boolean})
+                  onCheckedChange={(checked) =>
+                    setFormData({ ...formData, agreePrivacy: checked as boolean })
                   }
                 />
                 <label
@@ -116,15 +156,20 @@ const Signup = () => {
                 </label>
               </div>
             </div>
-
-            <Link to="/dashboard">
-              <Button 
+            {isLoading ? (
+              <div className="flex justify-center py-4">
+                <Loader />
+              </div>
+            ) : (
+              <Button
+                onClick={handleSubmit}
                 className="w-full bg-gradient-wellness hover:opacity-90"
                 disabled={!formData.agreeTerms || !formData.agreePrivacy}
               >
                 Create Account
               </Button>
-            </Link>
+            )}
+
 
             <div className="relative">
               <Separator />
@@ -132,7 +177,7 @@ const Signup = () => {
                 Or sign up with
               </span>
             </div>
-
+            {/* 
             <div className="grid grid-cols-2 gap-4">
               <Button variant="outline" className="w-full">
                 Google
@@ -140,7 +185,7 @@ const Signup = () => {
               <Button variant="outline" className="w-full">
                 Apple
               </Button>
-            </div>
+            </div> */}
 
             <div className="text-center text-sm text-muted-foreground">
               Already have an account?{" "}

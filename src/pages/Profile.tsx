@@ -18,6 +18,7 @@ import {
   Download,
   Trash2
 } from "lucide-react";
+import { useAuthStore } from "@/util/AuthContext";
 
 const Profile = () => {
   const [anonymousMode, setAnonymousMode] = useState(false);
@@ -29,12 +30,36 @@ const Profile = () => {
     ai_insights: true
   });
 
+  const { name, email, isAuthenticated } = useAuthStore();
+
+  // Show loading or redirect if not authenticated
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center">
+        <Card>
+          <CardContent className="p-6">
+            <p>Please log in to view your profile.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   const userStats = {
     joinDate: "March 1, 2024",
     totalEntries: 127,
     longestStreak: 18,
     currentLevel: 8,
     achievements: 12
+  };
+
+  // Get user initials for avatar
+  const getInitials = (name: string) => {
+    return name
+      ?.split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase() || 'U';
   };
 
   return (
@@ -62,10 +87,10 @@ const Profile = () => {
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-4">
                     <Avatar className="w-16 h-16">
-                      <AvatarFallback className="text-xl">JD</AvatarFallback>
+                      <AvatarFallback className="text-xl">{getInitials(name || '')}</AvatarFallback>
                     </Avatar>
                     <div>
-                      <h3 className="font-medium text-lg">Jane Doe</h3>
+                      <h3 className="font-medium text-lg">{name || 'User'}</h3>
                       <p className="text-muted-foreground">Member since {userStats.joinDate}</p>
                       <Badge className="mt-1">Level {userStats.currentLevel}</Badge>
                     </div>
@@ -74,11 +99,11 @@ const Profile = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="username">Display Name</Label>
-                      <Input id="username" defaultValue="Jane Doe" />
+                      <Input id="username" defaultValue={name || ''} />
                     </div>
                     <div>
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" defaultValue="jane@example.com" />
+                      <Input id="email" type="email" defaultValue={email || ''} />
                     </div>
                   </div>
                   
@@ -88,6 +113,7 @@ const Profile = () => {
                 </CardContent>
               </Card>
 
+              {/* ...existing privacy settings and notifications cards... */}
               <Card className="bg-gradient-card shadow-card border-0">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -167,7 +193,7 @@ const Profile = () => {
               </Card>
             </div>
 
-            {/* Stats Sidebar */}
+            {/* ...existing stats sidebar... */}
             <div className="space-y-6">
               <Card className="bg-gradient-card shadow-card border-0">
                 <CardHeader>
