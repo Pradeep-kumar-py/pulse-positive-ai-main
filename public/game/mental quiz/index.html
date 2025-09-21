@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brain Power Quiz - Mathematical Mind Training</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <header class="quiz-header">
+            <h1>🧠 Brain Power Quiz</h1>
+            <p class="subtitle">Sharpen your mind with endless mathematical challenges</p>
+        </header>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="question-counter">Question 1 of 20</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+        </div>
+
+        <div class="stats-dashboard">
+            <div class="stat-card">
+                <div class="stat-icon">🎯</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="accuracy">100%</span>
+                    <span class="stat-label">Accuracy</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⚡</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="avg-time">0s</span>
+                    <span class="stat-label">Avg Time</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="streak">0</span>
+                    <span class="stat-label">Streak</span>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🧩</div>
+                <div class="stat-content">
+                    <span class="stat-value" id="difficulty">Easy</span>
+                    <span class="stat-label">Level</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="motivation-box">
+            <p id="motivation-text">Every challenge strengthens your cognitive abilities! 💪</p>
+        </div>
+
+        <div class="quiz-content">
+            <div class="question-section">
+                <div class="question-type">
+                    <span id="question-type-badge">Missing Operators</span>
+                </div>
+                <div class="question-container">
+                    <h2 id="question-text"></h2>
+                    <div id="question-visual" class="question-visual"></div>
+                    <div id="timer-display" class="timer-display">
+                        <span class="timer-icon">⏱️</span>
+                        <span id="question-timer">30</span>s
+                    </div>
+                    <div id="hint-box" class="hint-box hidden">
+                        <span class="hint-icon">💡</span>
+                        <span id="hint-text"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="answers-section">
+                <div id="answers-container" class="answers-grid"></div>
+            </div>
+
+            <div class="question-controls">
+                <button id="hint-btn" class="control-btn hint-btn">💡 Hint</button>
+                <button id="skip-btn" class="control-btn skip-btn">⏭️ Skip</button>
+                <button id="pause-btn" class="control-btn pause-btn">⏸️ Pause</button>
+            </div>
+        </div>
+
+        <!-- Result Modal -->
+        <div id="result-modal" class="modal hidden">
+            <div class="modal-content result-content">
+                <div id="result-status" class="result-status"></div>
+                <div id="result-explanation" class="result-explanation"></div>
+                <button id="next-question-btn" class="control-btn next-btn">Next Question ➡️</button>
+            </div>
+        </div>
+
+        <!-- Final Results Modal -->
+        <div id="final-modal" class="modal hidden">
+            <div class="modal-content final-content">
+                <h2>🎉 Quiz Complete!</h2>
+                <div class="final-stats">
+                    <div class="final-stat">
+                        <span class="final-label">Final Score:</span>
+                        <span id="final-score" class="final-value">0/20</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-label">Accuracy:</span>
+                        <span id="final-accuracy" class="final-value">0%</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-label">Best Streak:</span>
+                        <span id="final-streak" class="final-value">0</span>
+                    </div>
+                    <div class="final-stat">
+                        <span class="final-label">Mental Rating:</span>
+                        <span id="mental-rating" class="final-value">Beginner</span>
+                    </div>
+                </div>
+                <div class="final-message">
+                    <p id="final-message-text"></p>
+                </div>
+                <div class="final-controls">
+                    <button id="restart-btn" class="control-btn">🔄 New Quiz</button>
+                    <button id="harder-btn" class="control-btn">📈 Harder Level</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Modal -->
+        <div id="pause-modal" class="modal hidden">
+            <div class="modal-content pause-content">
+                <h3>Game Paused</h3>
+                <p>Take a moment to relax and refocus your mind</p>
+                <div class="breathing-circle"></div>
+                <button id="resume-btn" class="control-btn">▶️ Resume</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

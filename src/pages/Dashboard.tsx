@@ -6,6 +6,8 @@ import { Heart, Brain, BookOpen, MessageCircle, Users, Trophy } from "lucide-rea
 import Navigation from "@/components/Navigation";
 import { useAuthStore } from "../util/AuthContext";
 
+
+
 const Dashboard = () => {
 
   const { isAuthenticated, name, email } = useAuthStore();
@@ -23,6 +25,8 @@ const Dashboard = () => {
             </h1>
             <p className="text-lg text-muted-foreground">Track your mood, build healthy habits, and grow with AI-powered insights</p>
           </div>
+
+          <MentalHealthReport />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="bg-gradient-card shadow-card hover:shadow-soft transition-all duration-300 border-0">
