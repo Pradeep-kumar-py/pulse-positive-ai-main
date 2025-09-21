@@ -6,6 +6,7 @@ interface AuthState {
   accessToken: string | null;
   name: string | null;
   email: string | null;
+
   mood: string;
   intensity: string;
   description: string;
@@ -18,6 +19,7 @@ interface AuthState {
   setJournalTitle: (journalTitle: string) => void;
   setJournalContent: (journalContent: string) => void;
   setCommunityThought: (communityThought: string) => void;
+
   setIsAuthenticated: (isAuthenticated: boolean) => void;
   setAccessToken: (accessToken: string | null) => void;
   setSName: (name: string | null) => void;
@@ -28,6 +30,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>((set, get) => ({
   isAuthenticated: false,
   accessToken: null,
+
   name: '',
   email: '',
   mood: '',
@@ -42,6 +45,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   setJournalTitle: (journalTitle: string) => set({ journalTitle }),
   setJournalContent: (journalContent: string) => set({ journalContent }),
   setCommunityThought: (communityThought: string) => set({ communityThought }),
+
   setSEmail: (email: string | null) => set({ email }),
   setSName: (name: string | null) => set({ name }),
   setAccessToken: (accessToken: string | null) => set({ accessToken }),

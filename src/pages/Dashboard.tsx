@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Heart, Brain, BookOpen, MessageCircle, Users, Trophy } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useAuthStore } from "../util/AuthContext";
-import MentalHealthReport from "@/components/MentalHealthReport";
+
+
 
 const Dashboard = () => {
 

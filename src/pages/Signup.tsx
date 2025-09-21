@@ -21,7 +21,9 @@ const Signup = () => {
     agreePrivacy: false,
   });
   const [isLoading, setIsLoading] = useState(false);
+
   // const { setAuthState } = useAuthStore();
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -31,6 +33,7 @@ const Signup = () => {
     try {
       setIsLoading(true);
       const response = await fetch(`${BASE_URL}/api/user/register`, {
+
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -55,6 +58,7 @@ const Signup = () => {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-wellness-green-soft/20 flex items-center justify-center p-4">
@@ -84,9 +88,11 @@ const Signup = () => {
                 id="name"
                 placeholder="Enter your full name"
                 value={formData.name}
+<
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
+
               />
             </div>
             <div className="space-y-2">
@@ -96,9 +102,11 @@ const Signup = () => {
                 type="email"
                 placeholder="your@email.com"
                 value={formData.email}
+
                 onChange={(e) =>
                   setFormData({ ...formData, email: e.target.value })
                 }
+
               />
             </div>
             <div className="space-y-2">
@@ -108,9 +116,11 @@ const Signup = () => {
                 type="password"
                 placeholder="Create a strong password"
                 value={formData.password}
+
                 onChange={(e) =>
                   setFormData({ ...formData, password: e.target.value })
                 }
+
               />
             </div>
             <div className="space-y-2">
@@ -120,9 +130,11 @@ const Signup = () => {
                 type="password"
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
+
                 onChange={(e) =>
                   setFormData({ ...formData, confirmPassword: e.target.value })
                 }
+
               />
             </div>
 
@@ -150,10 +162,12 @@ const Signup = () => {
                   id="privacy"
                   checked={formData.agreePrivacy}
                   onCheckedChange={(checked) =>
+
                     setFormData({
                       ...formData,
                       agreePrivacy: checked as boolean,
                     })
+
                   }
                 />
                 <label
@@ -180,6 +194,8 @@ const Signup = () => {
                 Create Account
               </Button>
             )}
+
+
 
             <div className="relative">
               <Separator />
