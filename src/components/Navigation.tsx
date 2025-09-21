@@ -62,7 +62,7 @@ const Navigation = () => {
               </Link>
             ))}
             <Button>
-              <a href="https://mental-health-ai-kohl.vercel.app/">Assesmengt</a>
+              <a href="https://mental-health-ai-kohl.vercel.app/">Assessment</a>
             </Button>
             {isAuthenticated && (
               <div className="flex items-center gap-2 pl-3 ml-2 border-l border-border">

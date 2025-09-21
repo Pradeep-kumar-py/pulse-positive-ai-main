@@ -18,7 +18,6 @@ import Insights from "./pages/Insights";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
-import Chatbot from "./pages/Chatbot";
 
 
 
@@ -37,8 +36,6 @@ const App = () => {
             <Route path="/mood" element={<MoodTracking />} />
             <Route path="/habits" element={<HabitsTracking />} />
             <Route path="/journal" element={<Journaling />} />
-            <Route path="/companion" element={<Chatbot />} />
-            <Route path="/chatbot" element={<Chatbot />} />
 
             <Route path="/community" element={<Community />} />
             <Route path="/profile" element={<Profile />} />
