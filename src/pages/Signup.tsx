@@ -21,13 +21,12 @@ const Signup = () => {
     agreePrivacy: false,
   });
   const [isLoading, setIsLoading] = useState(false);
-<<<<<<< HEAD
-  const { setIsAuthenticated, setAccessToken, setSName, setSEmail } = useAuthStore();
-=======
+
+
+
 
   // const { setAuthState } = useAuthStore();
 
->>>>>>> 40b7661bc2712f6d38d753a28adb10d0049d39b3
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -50,16 +49,10 @@ const Signup = () => {
       }
       const data = await response.json();
 
-<<<<<<< HEAD
-      localStorage.setItem('token', data.accessToken);
-      setAccessToken(data.accessToken);
-      setIsAuthenticated(true);
-      setSEmail(data.email);
-      setSName(data.name);
-=======
+
       localStorage.setItem("token", data.accessToken);
       // setAuthState({ isAuthenticated: true, email: data.email, name: data.name });
->>>>>>> 40b7661bc2712f6d38d753a28adb10d0049d39b3
+
 
       navigate("/dashboard");
 
@@ -100,7 +93,6 @@ const Signup = () => {
                 id="name"
                 placeholder="Enter your full name"
                 value={formData.name}
-<
                 onChange={(e) =>
                   setFormData({ ...formData, name: e.target.value })
                 }
