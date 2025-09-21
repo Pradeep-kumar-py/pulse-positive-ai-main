@@ -21,6 +21,8 @@ import NotFound from "./pages/NotFound";
 import Chatbot from "./pages/Chatbot";
 
 
+
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -36,8 +38,8 @@ const App = () => {
             <Route path="/mood" element={<MoodTracking />} />
             <Route path="/habits" element={<HabitsTracking />} />
             <Route path="/journal" element={<Journaling />} />
-            <Route path="/companion" element={<Chatbot />} />
-            <Route path="/chatbot" element={<Chatbot />} />
+
+
 
             <Route path="/community" element={<Community />} />
             <Route path="/profile" element={<Profile />} />

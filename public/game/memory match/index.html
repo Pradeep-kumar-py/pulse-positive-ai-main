@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mindful Memory - Therapeutic Memory Game</title>
+    <!-- <link rel="stylesheet" href="style.css" /> -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #333;
+      }
+
+      .game-container {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        width: 95%;
+        backdrop-filter: blur(10px);
+      }
+
+      .game-header {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .game-header h1 {
+        color: #4a5568;
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        color: #718096;
+        font-size: 1.1rem;
+        font-style: italic;
+      }
+
+      .stats-container {
+        display: flex;
+        justify-content: space-around;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #e2e8f0 0%, #f7fafc 100%);
+        padding: 1rem;
+        border-radius: 15px;
+      }
+
+      .stat {
+        text-align: center;
+      }
+
+      .label {
+        display: block;
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .stat span:last-child {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #2d3748;
+      }
+
+      .encouragement-box {
+        text-align: center;
+        padding: 1rem;
+        background: linear-gradient(135deg, #fef5e7 0%, #fed7aa 100%);
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid #f6ad55;
+      }
+
+      .encouragement-box p {
+        color: #744210;
+        font-weight: 500;
+      }
+
+      .difficulty-selector {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .difficulty-btn {
+        padding: 0.75rem 1.5rem;
+        border: 2px solid #cbd5e0;
+        background: white;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+      }
+
+      .difficulty-btn:hover {
+        border-color: #667eea;
+        background: #f7fafc;
+      }
+
+      .difficulty-btn.active {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border-color: transparent;
+      }
+
+      .game-board {
+        display: grid;
+        gap: 0.75rem;
+        margin: 2rem auto;
+        max-width: 600px;
+        perspective: 1000px;
+      }
+
+      .game-board.easy {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(3, 1fr);
+      }
+
+      .game-board.medium {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+      }
+
+      .game-board.hard {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+      }
+
+      .memory-card {
+        aspect-ratio: 1;
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.6s ease;
+        cursor: pointer;
+        border-radius: 15px;
+        min-height: 80px;
+      }
+
+      .memory-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .memory-card.flipped {
+        transform: rotateY(180deg);
+      }
+
+      .memory-card.matched {
+        opacity: 0.7;
+        transform: scale(0.95);
+        animation: matchGlow 0.6s ease-in-out;
+      }
+
+      @keyframes matchGlow {
+        0%,
+        100% {
+          box-shadow: 0 0 0 rgba(72, 187, 120, 0);
+        }
+        50% {
+          box-shadow: 0 0 30px rgba(72, 187, 120, 0.8);
+        }
+      }
+
+      .card-face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.5rem;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .card-front {
+        background: linear-gradient(135deg, #4fd1c7 0%, #81e6d9 100%);
+        color: white;
+        transform: rotateY(180deg);
+      }
+
+      .card-back {
+        background: linear-gradient(135deg, #a0aec0 0%, #cbd5e0 100%);
+        color: #4a5568;
+      }
+
+      .controls {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 2rem;
+      }
+
+      .control-btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        color: white;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(66, 153, 225, 0.3);
+      }
+
+      .control-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+      }
+
+      .modal.hidden {
+        display: none;
+      }
+
+      .modal-content {
+        background: white;
+        padding: 2rem;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 400px;
+        width: 90%;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      }
+
+      .modal-content h3 {
+        margin-bottom: 1rem;
+        color: #2d3748;
+        font-size: 1.5rem;
+      }
+
+      .breathing-circle {
+        width: 100px;
+        height: 100px;
+        border: 4px solid #4299e1;
+        border-radius: 50%;
+        margin: 2rem auto;
+        animation: breathe 4s infinite;
+      }
+
+      @keyframes breathe {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.7;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+
+      .celebration {
+        background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+      }
+
+      .achievement-stats {
+        margin: 1rem 0;
+        padding: 1rem;
+        background: rgba(72, 187, 120, 0.1);
+        border-radius: 10px;
+        font-weight: 500;
+      }
+
+      @media (max-width: 768px) {
+        .game-container {
+          padding: 1rem;
+        }
+
+        .stats-container {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .difficulty-selector {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="game-container">
+      <header class="game-header">
+        <h1>🧠 Mindful Memory</h1>
+        <p class="subtitle">Take a moment to breathe and focus</p>
+      </header>
+
+      <div class="stats-container">
+        <div class="stat">
+          <span class="label">Matches:</span>
+          <span id="matches">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Attempts:</span>
+          <span id="attempts">0</span>
+        </div>
+        <div class="stat">
+          <span class="label">Time:</span>
+          <span id="timer">00:00</span>
+        </div>
+      </div>
+
+      <div class="encouragement-box">
+        <p id="encouragement-text">
+          You're doing great! Take your time and enjoy the process.
+        </p>
+      </div>
+
+      <div class="difficulty-selector">
+        <button class="difficulty-btn active" data-level="easy">
+          Easy (4x3)
+        </button>
+        <button class="difficulty-btn" data-level="medium">Medium (4x4)</button>
+        <button class="difficulty-btn" data-level="hard">Hard (6x4)</button>
+      </div>
+
+      <div id="game-board" class="game-board"></div>
+
+      <div class="controls">
+        <button id="pause-btn" class="control-btn">⏸️ Pause & Breathe</button>
+        <button id="new-game-btn" class="control-btn">🔄 New Game</button>
+        <button id="hint-btn" class="control-btn">💡 Gentle Hint</button>
+      </div>
+
+      <div id="pause-modal" class="modal hidden">
+        <div class="modal-content">
+          <h3>Take a Mindful Moment</h3>
+          <p>Breathe in slowly... hold... breathe out...</p>
+          <div class="breathing-circle"></div>
+          <button id="resume-btn" class="control-btn">Continue Playing</button>
+        </div>
+      </div>
+
+      <div id="completion-modal" class="modal hidden">
+        <div class="modal-content celebration">
+          <h3>🎉 Wonderful Job!</h3>
+          <p id="completion-message"></p>
+          <div class="achievement-stats"></div>
+          <button id="play-again-btn" class="control-btn">Play Again</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="script.js"></script> -->
+    <script>
+      class MindfulMemoryGame {
+        constructor() {
+          this.gameBoard = document.getElementById("game-board");
+          this.matchesDisplay = document.getElementById("matches");
+          this.attemptsDisplay = document.getElementById("attempts");
+          this.timerDisplay = document.getElementById("timer");
+          this.encouragementText =
+            document.getElementById("encouragement-text");
+
+          this.cards = [];
+          this.flippedCards = [];
+          this.matches = 0;
+          this.attempts = 0;
+          this.gameTime = 0;
+          this.timer = null;
+          this.currentDifficulty = "easy";
+          this.isPaused = false;
+          this.gameStarted = false;
+
+          this.encouragementMessages = [
+            "You're doing wonderfully! Keep going! 🌟",
+            "Great job! Each attempt brings you closer! 💪",
+            "Remember to breathe and stay relaxed! 🌸",
+            "You're making excellent progress! 🎯",
+            "Stay positive and trust the process! ✨",
+            "Every match is a small victory! 🏆",
+            "You're building mental strength! 🧠",
+            "Take your time - there's no rush! 🕊️",
+          ];
+
+          this.cardSymbols = {
+            easy: ["🌸", "🌺", "🌻", "🌷", "🌹", "🌼"],
+            medium: ["🌸", "🌺", "🌻", "🌷", "🌹", "🌼", "🦋", "🐛"],
+            hard: [
+              "🌸",
+              "🌺",
+              "🌻",
+              "🌷",
+              "🌹",
+              "🌼",
+              "🦋",
+              "🐛",
+              "🌿",
+              "🍀",
+              "🌱",
+              "🌾",
+            ],
+          };
+
+          this.initializeGame();
+          this.bindEvents();
+        }
+
+        initializeGame() {
+          this.createCards();
+          this.renderBoard();
+          this.updateStats();
+          this.updateEncouragement();
+        }
+
+        bindEvents() {
+          // Difficulty selection
+          document.querySelectorAll(".difficulty-btn").forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              document
+                .querySelectorAll(".difficulty-btn")
+                .forEach((b) => b.classList.remove("active"));
+              e.target.classList.add("active");
+              this.currentDifficulty = e.target.dataset.level;
+              this.resetGame();
+            });
+          });
+
+          // Control buttons
+          document
+            .getElementById("new-game-btn")
+            .addEventListener("click", () => this.resetGame());
+          document
+            .getElementById("pause-btn")
+            .addEventListener("click", () => this.togglePause());
+          document
+            .getElementById("hint-btn")
+            .addEventListener("click", () => this.showHint());
+          document
+            .getElementById("resume-btn")
+            .addEventListener("click", () => this.togglePause());
+          document
+            .getElementById("play-again-btn")
+            .addEventListener("click", () => {
+              document
+                .getElementById("completion-modal")
+                .classList.add("hidden");
+              this.resetGame();
+            });
+        }
+
+        createCards() {
+          const symbols = this.cardSymbols[this.currentDifficulty];
+          const cardCount = this.getCardCount();
+          const selectedSymbols = symbols.slice(0, cardCount / 2);
+
+          this.cards = [...selectedSymbols, ...selectedSymbols]
+            .map((symbol, index) => ({ symbol, id: index, matched: false }))
+            .sort(() => Math.random() - 0.5); // Fisher-Yates shuffle
+        }
+
+        getCardCount() {
+          const counts = { easy: 12, medium: 16, hard: 24 };
+          return counts[this.currentDifficulty];
+        }
+
+        renderBoard() {
+          this.gameBoard.className = `game-board ${this.currentDifficulty}`;
+          this.gameBoard.innerHTML = "";
+
+          this.cards.forEach((card, index) => {
+            const cardElement = document.createElement("div");
+            cardElement.className = "memory-card";
+            cardElement.dataset.id = index;
+
+            cardElement.innerHTML = `
+                <div class="card-face card-back">?</div>
+                <div class="card-face card-front">${card.symbol}</div>
+            `;
+
+            cardElement.addEventListener("click", () => this.flipCard(index));
+            this.gameBoard.appendChild(cardElement);
+          });
+        }
+
+        flipCard(index) {
+          if (
+            this.isPaused ||
+            this.flippedCards.length >= 2 ||
+            this.cards[index].matched ||
+            this.flippedCards.includes(index)
+          ) {
+            return;
+          }
+
+          if (!this.gameStarted) {
+            this.startTimer();
+            this.gameStarted = true;
+          }
+
+          const cardElement = document.querySelector(`[data-id="${index}"]`);
+          cardElement.classList.add("flipped");
+          this.flippedCards.push(index);
+
+          if (this.flippedCards.length === 2) {
+            this.attempts++;
+            this.updateStats();
+            this.checkMatch();
+          }
+        }
+
+        checkMatch() {
+          const [firstIndex, secondIndex] = this.flippedCards;
+          const firstCard = this.cards[firstIndex];
+          const secondCard = this.cards[secondIndex];
+
+          setTimeout(() => {
+            if (firstCard.symbol === secondCard.symbol) {
+              // Match found!
+              this.handleMatch(firstIndex, secondIndex);
+            } else {
+              // No match
+              this.handleMismatch(firstIndex, secondIndex);
+            }
+
+            this.flippedCards = [];
+            this.updateEncouragement();
+          }, 1000);
+        }
+
+        handleMatch(firstIndex, secondIndex) {
+          this.cards[firstIndex].matched = true;
+          this.cards[secondIndex].matched = true;
+          this.matches++;
+
+          const firstElement = document.querySelector(
+            `[data-id="${firstIndex}"]`
+          );
+          const secondElement = document.querySelector(
+            `[data-id="${secondIndex}"]`
+          );
+
+          firstElement.classList.add("matched");
+          secondElement.classList.add("matched");
+
+          this.updateStats();
+
+          if (this.matches === this.cards.length / 2) {
+            this.gameComplete();
+          }
+        }
+
+        handleMismatch(firstIndex, secondIndex) {
+          const firstElement = document.querySelector(
+            `[data-id="${firstIndex}"]`
+          );
+          const secondElement = document.querySelector(
+            `[data-id="${secondIndex}"]`
+          );
+
+          firstElement.classList.remove("flipped");
+          secondElement.classList.remove("flipped");
+        }
+
+        gameComplete() {
+          clearInterval(this.timer);
+
+          const completionModal = document.getElementById("completion-modal");
+          const completionMessage =
+            document.getElementById("completion-message");
+          const achievementStats = document.querySelector(".achievement-stats");
+
+          const timeText = this.formatTime(this.gameTime);
+          const accuracy = Math.round((this.matches / this.attempts) * 100);
+
+          completionMessage.textContent = `You completed the ${this.currentDifficulty} level with incredible focus and patience!`;
+          achievementStats.innerHTML = `
+            <div>⏱️ Time: ${timeText}</div>
+            <div>🎯 Matches: ${this.matches}</div>
+            <div>📊 Accuracy: ${accuracy}%</div>
+            <div>🧘‍♀️ You've strengthened your memory and mindfulness!</div>
+        `;
+
+          completionModal.classList.remove("hidden");
+        }
+
+        showHint() {
+          if (this.isPaused) return;
+
+          const unmatched = this.cards
+            .map((card, index) => ({ card, index }))
+            .filter((item) => !item.card.matched);
+
+          if (unmatched.length >= 2) {
+            const randomCard =
+              unmatched[Math.floor(Math.random() * unmatched.length)];
+            const cardElement = document.querySelector(
+              `[data-id="${randomCard.index}"]`
+            );
+
+            cardElement.classList.add("flipped");
+            setTimeout(() => {
+              cardElement.classList.remove("flipped");
+            }, 1500);
+
+            this.updateEncouragement(
+              "Here's a gentle hint to help you along! 💡"
+            );
+          }
+        }
+
+        togglePause() {
+          this.isPaused = !this.isPaused;
+          const pauseModal = document.getElementById("pause-modal");
+
+          if (this.isPaused) {
+            clearInterval(this.timer);
+            pauseModal.classList.remove("hidden");
+          } else {
+            pauseModal.classList.add("hidden");
+            if (this.gameStarted) {
+              this.startTimer();
+            }
+          }
+        }
+
+        startTimer() {
+          this.timer = setInterval(() => {
+            this.gameTime++;
+            this.updateStats();
+          }, 1000);
+        }
+
+        updateStats() {
+          this.matchesDisplay.textContent = this.matches;
+          this.attemptsDisplay.textContent = this.attempts;
+          this.timerDisplay.textContent = this.formatTime(this.gameTime);
+        }
+
+        formatTime(seconds) {
+          const mins = Math.floor(seconds / 60);
+          const secs = seconds % 60;
+          return `${mins.toString().padStart(2, "0")}:${secs
+            .toString()
+            .padStart(2, "0")}`;
+        }
+
+        updateEncouragement(customMessage = null) {
+          if (customMessage) {
+            this.encouragementText.textContent = customMessage;
+            return;
+          }
+
+          const message =
+            this.encouragementMessages[
+              Math.floor(Math.random() * this.encouragementMessages.length)
+            ];
+          this.encouragementText.textContent = message;
+        }
+
+        resetGame() {
+          clearInterval(this.timer);
+          this.cards = [];
+          this.flippedCards = [];
+          this.matches = 0;
+          this.attempts = 0;
+          this.gameTime = 0;
+          this.gameStarted = false;
+          this.isPaused = false;
+
+          document.getElementById("pause-modal").classList.add("hidden");
+          document.getElementById("completion-modal").classList.add("hidden");
+
+          this.initializeGame();
+        }
+      }
+
+      // Initialize the game when the page loads
+      document.addEventListener("DOMContentLoaded", () => {
+        new MindfulMemoryGame();
+      });
+    </script>
+  </body>
+</html>

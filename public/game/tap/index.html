@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Focus Tap - Attention Training & Assessment</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>🎯 Focus Tap</h1>
+            <p class="subtitle">Attention Training & Cognitive Assessment</p>
+        </header>
+
+        <div class="metrics-dashboard">
+            <div class="metric-card attention">
+                <div class="metric-icon">👁️</div>
+                <div class="metric-content">
+                    <span class="metric-value" id="attention-score">100%</span>
+                    <span class="metric-label">Attention Level</span>
+                </div>
+            </div>
+            <div class="metric-card reaction">
+                <div class="metric-icon">⚡</div>
+                <div class="metric-content">
+                    <span class="metric-value" id="avg-reaction">0ms</span>
+                    <span class="metric-label">Avg Reaction</span>
+                </div>
+            </div>
+            <div class="metric-card accuracy">
+                <div class="metric-icon">🎯</div>
+                <div class="metric-content">
+                    <span class="metric-value" id="accuracy-rate">100%</span>
+                    <span class="metric-label">Accuracy</span>
+                </div>
+            </div>
+            <div class="metric-card impulse">
+                <div class="metric-icon">🧠</div>
+                <div class="metric-content">
+                    <span class="metric-value" id="impulse-control">Perfect</span>
+                    <span class="metric-label">Impulse Control</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat-item">
+                <span class="stat-label">Score:</span>
+                <span id="current-score" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Streak:</span>
+                <span id="current-streak" class="stat-value">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Level:</span>
+                <span id="difficulty-level" class="stat-value">1</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Time:</span>
+                <span id="game-time" class="stat-value">0:00</span>
+            </div>
+        </div>
+
+        <div class="instructions-panel">
+            <div class="instruction-item target">
+                <div class="sample-target"></div>
+                <span>TAP Green Circles</span>
+            </div>
+            <div class="instruction-item distractor">
+                <div class="sample-distractor"></div>
+                <span>IGNORE Red Circles</span>
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button id="start-btn" class="control-btn start-btn">▶️ Start Assessment</button>
+            <button id="pause-btn" class="control-btn pause-btn hidden">⏸️ Pause</button>
+            <button id="stop-btn" class="control-btn stop-btn hidden">⏹️ Stop</button>
+        </div>
+
+        <div id="game-area" class="game-area">
+            <div id="focus-indicator" class="focus-indicator">
+                <div class="focus-dot"></div>
+                <p>Focus on the center. Tap green circles only!</p>
+            </div>
+        </div>
+
+        <!-- Game Objects Container -->
+        <div id="objects-container" class="objects-container"></div>
+
+        <!-- Pause Modal -->
+        <div id="pause-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>Assessment Paused</h3>
+                <p>Take a moment to rest your eyes and refocus</p>
+                <div class="pause-stats">
+                    <div>Current Performance: <span id="pause-performance"></span></div>
+                    <div>Focus Level: <span id="pause-focus"></span></div>
+                </div>
+                <button id="resume-btn" class="control-btn">▶️ Resume</button>
+            </div>
+        </div>
+
+        <!-- Results Modal -->
+        <div id="results-modal" class="modal hidden">
+            <div class="modal-content results-content">
+                <h2>🧠 Attention Assessment Results</h2>
+                
+                <div class="results-summary">
+                    <div class="result-metric">
+                        <span class="result-label">Overall Attention Level:</span>
+                        <span id="final-attention" class="result-value attention-score">Excellent</span>
+                    </div>
+                    <div class="result-metric">
+                        <span class="result-label">ADHD Risk Indicator:</span>
+                        <span id="adhd-risk" class="result-value risk-low">Low Risk</span>
+                    </div>
+                </div>
+
+                <div class="detailed-results">
+                    <div class="result-section">
+                        <h4>📊 Performance Metrics</h4>
+                        <div class="metrics-grid">
+                            <div class="metric-result">
+                                <span>Correct Taps:</span>
+                                <span id="correct-taps">0</span>
+                            </div>
+                            <div class="metric-result">
+                                <span>Missed Targets:</span>
+                                <span id="missed-targets">0</span>
+                            </div>
+                            <div class="metric-result">
+                                <span>False Alarms:</span>
+                                <span id="false-alarms">0</span>
+                            </div>
+                            <div class="metric-result">
+                                <span>Reaction Time:</span>
+                                <span id="final-reaction">0ms</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <h4>🎯 Attention Analysis</h4>
+                        <div id="attention-analysis" class="analysis-text"></div>
+                    </div>
+
+                    <div class="result-section">
+                        <h4>💡 Recommendations</h4>
+                        <div id="recommendations" class="recommendations-text"></div>
+                    </div>
+                </div>
+
+                <div class="results-actions">
+                    <button id="retry-btn" class="control-btn">🔄 Try Again</button>
+                    <button id="save-results-btn" class="control-btn">💾 Save Results</button>
+                    <button id="share-btn" class="control-btn">📤 Share</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

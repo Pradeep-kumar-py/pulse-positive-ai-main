@@ -1,1 +1,3 @@
-export const BASE_URL = "http://localhost:4000"
+
+export const BASE_URL = "https://mumbai-hackk-dnd0cvefeac2fgb6.canadacentral-01.azurewebsites.net";
+
