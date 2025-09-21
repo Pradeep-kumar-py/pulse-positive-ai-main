@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Heart, Brain, BookOpen, MessageCircle, Users, Trophy } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import { useAuthStore } from "../util/AuthContext";
+import MentalHealthReport from "@/components/MentalHealthReport";
 
 const Dashboard = () => {
 
@@ -23,6 +24,8 @@ const Dashboard = () => {
             </h1>
             <p className="text-lg text-muted-foreground">Track your mood, build healthy habits, and grow with AI-powered insights</p>
           </div>
+
+          <MentalHealthReport />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <Card className="bg-gradient-card shadow-card hover:shadow-soft transition-all duration-300 border-0">

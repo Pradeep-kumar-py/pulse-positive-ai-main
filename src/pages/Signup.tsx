@@ -21,7 +21,7 @@ const Signup = () => {
     agreePrivacy: false
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { setAuthState } = useAuthStore();
+  // const { setAuthState } = useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,7 +44,7 @@ const Signup = () => {
       const data = await response.json();
 
       localStorage.setItem('token', data.accessToken);
-      setAuthState({ isAuthenticated: true, email: data.email, name: data.name });
+      // setAuthState({ isAuthenticated: true, email: data.email, name: data.name });
 
       navigate('/dashboard');
 

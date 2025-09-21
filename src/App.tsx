@@ -21,6 +21,7 @@ import NotFound from "./pages/NotFound";
 import Chatbot from "./pages/Chatbot";
 
 
+
 const queryClient = new QueryClient();
 
 const App = () => {

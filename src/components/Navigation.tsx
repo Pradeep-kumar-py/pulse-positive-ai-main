@@ -10,7 +10,8 @@ import {
   BarChart3,
   User,
   Home,
-  LogOut
+  LogOut,
+  HospitalIcon
 } from "lucide-react";
 import { useAuthStore } from "@/util/AuthContext";
 
@@ -28,6 +29,7 @@ const Navigation = () => {
     { path: "/achievements", label: "Progress", icon: Trophy },
     // { path: "/insights", label: "Insights", icon: BarChart3 },
     { path: "/companion", label: "Eliza Ai", icon: MessageCircle },
+    // { path: "/assesment", label: "Assesment", icon: HospitalIcon },
     // { path: "/chatbot", label: "Chatbot", icon: MessageCircle },
     { path: "/dashboard", label: "Dashboard", icon: Home },
     // { path: "/profile", label: "Profile", icon: User },
@@ -39,7 +41,10 @@ const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/80 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/dashboard" className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <Link
+            to="/dashboard"
+            className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent"
+          >
             MindfulSpace
           </Link>
 
@@ -56,6 +61,9 @@ const Navigation = () => {
                 </Button>
               </Link>
             ))}
+            <Button>
+              <a href="https://mental-health-ai-kohl.vercel.app/">Assesmengt</a>
+            </Button>
             {isAuthenticated && (
               <div className="flex items-center gap-2 pl-3 ml-2 border-l border-border">
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/60 hover:bg-muted transition">
@@ -63,7 +71,7 @@ const Navigation = () => {
                     <User size={16} />
                   </div>
                   <span className="text-sm font-medium">
-                    Welcome {name || email?.split('@')[0] || 'User'}
+                    Welcome {name || email?.split("@")[0] || "User"}
                   </span>
                 </div>
                 <Button
