@@ -18,7 +18,7 @@ const Signup = () => {
     password: "",
     confirmPassword: "",
     agreeTerms: false,
-    agreePrivacy: false
+    agreePrivacy: false,
   });
   const [isLoading, setIsLoading] = useState(false);
   // const { setAuthState } = useAuthStore();
@@ -31,32 +31,30 @@ const Signup = () => {
     try {
       setIsLoading(true);
       const response = await fetch(`${BASE_URL}/api/user/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json'
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create account');
+        throw new Error("Failed to create account");
       }
       const data = await response.json();
 
-      localStorage.setItem('token', data.accessToken);
+      localStorage.setItem("token", data.accessToken);
       // setAuthState({ isAuthenticated: true, email: data.email, name: data.name });
 
-      navigate('/dashboard');
+      navigate("/dashboard");
 
-      console.log('Account created successfully');
+      console.log("Account created successfully");
     } catch (error) {
-      console.error('Error creating account:', error);
+      console.error("Error creating account:", error);
     } finally {
       setIsLoading(false);
     }
-
   };
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-wellness-green-soft/20 flex items-center justify-center p-4">
@@ -69,7 +67,9 @@ const Signup = () => {
             <h1 className="text-3xl font-bold bg-gradient-wellness bg-clip-text text-transparent">
               Start Your Journey
             </h1>
-            <p className="text-muted-foreground">Create your wellness account today</p>
+            <p className="text-muted-foreground">
+              Create your wellness account today
+            </p>
           </div>
         </div>
 
@@ -84,7 +84,9 @@ const Signup = () => {
                 id="name"
                 placeholder="Enter your full name"
                 value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -94,7 +96,9 @@ const Signup = () => {
                 type="email"
                 placeholder="your@email.com"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -104,7 +108,9 @@ const Signup = () => {
                 type="password"
                 placeholder="Create a strong password"
                 value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -114,7 +120,9 @@ const Signup = () => {
                 type="password"
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
-                onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
               />
             </div>
 
@@ -142,7 +150,10 @@ const Signup = () => {
                   id="privacy"
                   checked={formData.agreePrivacy}
                   onCheckedChange={(checked) =>
-                    setFormData({ ...formData, agreePrivacy: checked as boolean })
+                    setFormData({
+                      ...formData,
+                      agreePrivacy: checked as boolean,
+                    })
                   }
                 />
                 <label
@@ -169,7 +180,6 @@ const Signup = () => {
                 Create Account
               </Button>
             )}
-
 
             <div className="relative">
               <Separator />
@@ -198,7 +208,9 @@ const Signup = () => {
 
         <div className="text-center text-xs text-muted-foreground space-y-1">
           <p>Your mental health data is private and secure.</p>
-          <p>We use industry-standard encryption to protect your information.</p>
+          <p>
+            We use industry-standard encryption to protect your information.
+          </p>
         </div>
       </div>
     </div>
